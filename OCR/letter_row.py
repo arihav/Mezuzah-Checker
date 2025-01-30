@@ -9,6 +9,7 @@ class Letter:
         self.x, self.y, self.w, self.h = cv2.boundingRect(letter)
 
         self.prediction = -1
+        self.confidence = 0
         self.mez_let = None
         self.increment = 0
         self.rownum = None

@@ -76,7 +76,12 @@ def knn_classifier(test_cells):
     knn.train(train_cells, cv2.ml.ROW_SAMPLE, key_images)
     ret, result, neighbours, dist = knn.findNearest(test_cells, k=1)
 
-    return result
+    max_dist = np.max(dist)  # Maximum distance from all test cases
+    confidences = 1 - (dist / max_dist)  # Convert to percentage
+
+    predictions = [{"id": int(result[i][0]), "confidence": float(confidences[i][0])} for i in range(len(result))]
+
+    return predictions
 
 
 def keras_classifier(test_cells):
@@ -91,8 +96,9 @@ def keras_classifier(test_cells):
     result = []
     for i, p in enumerate(predict):
         for key, val in id_to_class.items():
-            if np.argmax(p) == val:
-                result.append(key)
+            max_arg = np.argmax(p)
+            if max_arg == val:
+                result.append({'id': key, 'confidence': p[max_arg]})
 
     return result
 
@@ -109,7 +115,8 @@ def predict_letters(letters, img, cnn=True):
 
     # result = convert_to_letters(result)
     for key, letter in enumerate(letters):
-        letter.prediction = result[key]
+        letter.prediction = result[key]['id']
+        letter.confidence = float(result[key]['confidence'])
 
     print('Letter recognize process took:', time.time()-start)
 
