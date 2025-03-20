@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 import cv2
 import imutils
-from OCR import get_letters, predict_letters, get_matching
+from OCR import get_letters, predict_letters, get_matching, save_letters_to_json
 
 import cProfile
 import pstats
@@ -24,6 +24,9 @@ def show_img(let_list, img):
     red = (255, 0, 0)
     i = 0
     for let in let_list:
+        if let.rownum is None:
+            continue
+
         if let.rownum % 2 == 0:
             color = red
         else:
@@ -45,11 +48,14 @@ if '__main__' == __name__:
     img_resized = imutils.resize(image, width=1200)
 
     letter_list = get_letters(image)
+
     letter_list = predict_letters(letter_list, image, cnn=True)
 
-    get_matching(letter_list, image)
+    letter_list = get_matching(letter_list, image)
 
-    show_img(letter_list, image)
+    # save_letters_to_json(letter_list)
+
+    # show_img(letter_list, image)
 
 
 

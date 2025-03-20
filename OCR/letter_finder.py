@@ -80,7 +80,7 @@ def combine_letters(rows):
 
 
 def get_letters(img):
-    start = time.time()
+    start = time.process_time()
 
     let_list = detect_letters(img)
 
@@ -98,7 +98,7 @@ def get_letters(img):
     # for row in rows_list:
     #     let_list.extend(let for let in row.letter_list)
 
-    print('Letter finder process took:', time.time() - start)
+    print('Letter finder process took:', time.process_time() - start)
 
     return let_list
 

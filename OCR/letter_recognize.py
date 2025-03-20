@@ -104,7 +104,7 @@ def keras_classifier(test_cells):
 
 
 def predict_letters(letters, img, cnn=True):
-    start = time.time()
+    start = time.process_time()
 
     test_cells = img_handler(letters, img)
 
@@ -118,7 +118,7 @@ def predict_letters(letters, img, cnn=True):
         letter.prediction = result[key]['id']
         letter.confidence = float(result[key]['confidence'])
 
-    print('Letter recognize process took:', time.time()-start)
+    print('Letter recognize process took:', time.process_time()-start)
 
     return letters
 
